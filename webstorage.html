@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body
+        {
+            background-color:dimgray;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jak skladovat informace na webu?</h1>
+    <p>Dnes si ukážeme dvě cesty v rámci <b>Web Storage API</b>. Každý zná cookies, což je nejstarší způsob, jak uložit data na klientský počítač. Nástupce by měl být právě webstorage. Srovnání najdete v kódu v komentáři.</p>
+    <ul>
+        <li>localStorage - neboli uložení dat na klientském počítači navždy a pak </li>
+        <li>sessionStorage - což data vymaže po zavření prohlížeče. </li>
+    </ul>
+
+    <h2>Vytvoření nových záznamů</h2>
+    <p>Toto tlačítko vytvoří po stisknutí tři různé záznamy do paměti jakožto localStorage. </p>
+    <button onclick="createItems()">Vytvoř záznamy</button>
+
+    <h2>Smazání všech záznamů</h2>
+    <p>Po stisknutí tlačítka budou záznamy vymazány. </p>
+    <button onclick="deleteItems()">Smaž záznamy</button>
+
+    <h2>Smazání prvního záznamu (takže opakovaně smaže vše)</h2>
+    <button onclick="smazPrvni()">Smaž první</button>
+
+    <h2>Zobrazení všech záznamů</h2>
+    <p>Stiskni tlačítko pro zobrazení všech záznamů této domény. </p>
+    <button onclick="displayItems()">Zobraz záznamy</button>
+
+    <p id="demo"></p>
+
+    <script>
+        //Tato funkce tvoří tři záznamy, z nichž každý má klíč a hodnotu.
+        function createItems()
+        {
+            localStorage.setItem("mytime", Date.now());
+            localStorage.setItem("myname", "John");
+            localStorage.setItem("myage", 36);
+        }
+        //Tato funkce maže všechny záznamy.
+        function deleteItems()
+        {
+            localStorage.clear();
+        }
+        //Tato funkce zobrazí všechny záznamy.
+        function displayItems()
+        {
+            var klic,hodnota;
+            document.getElementById("demo").innerHTML = "";
+            for (let i = 0; i < localStorage.length; i++)
+            {
+                klic = localStorage.key(i);
+                hodnota = localStorage.getItem(klic);
+                document.getElementById("demo").innerHTML += klic +", "+ hodnota + "<br>";
+            }
+        }
+        function smazPrvni()
+        {
+            localStorage.removeItem(localStorage.key(0));
+        }
+
+    </script>
+
+    <!--
+        Srovnání cookies x webstorage od někoho chytrého z fóra: 
+       
+        **Cookies**
+    Pros
+    1. Legacy support (it's been around forever)
+    2. Persistent data
+    3. Expiration dates
+
+    Cons
+    1. Each domain stores all its cookies in a single string, which can make parsing data difficult
+    2. Data is unencrypted.
+    3. small in size, cookies are sent with every HTTP request
+    4. Limited size (4KB)
+    5. SQL injection can be performed from a cookie
+
+    **Local storage / Web storage**
+    Pros
+    1. Support by most modern browsers
+    2. Persistent data that is...
+    3. stored directly in the browser
+    4. Same-origin rules apply to local storage data
+    5. Is not sent with every HTTP request
+    6. ~5MB storage per domain (that's 5120KB)
+
+    Cons
+    Not supported by anything before:
+    1. IE 8
+    2. Firefox 3.5
+    3. Safari 4
+    4. Chrome 4
+    5. Opera 10.5
+    6. iOS 2.0
+    7. Android 2.0
+    8. If the server needs stored client information you purposefully have to send it. [3]
+
+
+
+    Based on my comparison I think that local storage is the logical successor of cookies for storing client-side data. While cookies were originally created as a work-around, local storage has been designed with a purpose.
+
+    Local storage is easier to work with because you don't have to parse a string to get data. Instead you can make a call for the variable name and it's value is returned. The same applies with creating and deleting data as well.
+
+    For saving client-side data I believe local storage wins. As someone on the stackoverflow boards pointed out however, if your server needs information from a client cookies will be a better solution. But if you just want to save user-prefs, num vists, or other stuff like that choose local storage.
+
+        -->
+
+
+</body>
+</html>
